@@ -100,4 +100,49 @@ HQ-SRV: nslookup br-r <br />
 BR-R: nslookup 30.0.0.2 <br />
 BR-SRV: nslookup 20.0.0.1 <br />
 
+## Task 5. BR-SRV
+```
+sudo apt install apache2 php mariadb-server graphviz aspell php-pspell php-curl php-gd php-intl php-mysqlnd php-xmlrpc php-ldap -y
+```
+```
+nano /etc/php/8.1/cli/php.ini
+```
+change this lines to
+
+>memory_limit = 256M <br />
+>max_execution_time = 300<br />
+>post_max_size = 100M<br />
+>upload_max_filesize = 100M<br />
+>max_input_vars = 3000<br />
+>date.timezone = "Europe/Moscow"<br />
+
+restart apache
+```
+sudo systemctl restart apache2.service 
+```
+
+installation muddle
+```
+cd /var/www/html
+sudo wget https://download.moodle.org/download.php/direct/stable403/moodle-latest-403.zip
+sudo unzip moodle-latest-403.zip
+sudo cd moodle
+sudo cp -r * /var/www/html/
+sudo chown -R www-data: /var/www/html 
+sudo mkdir /var/www/moodledata 
+sudo chown -R www-data: /var/www/moodledata
+```
+creating database
+```
+sudo systemctl restart mariadb.service
+sudo mysql_secure_installation
+sudo mysql -u root -p
+```
+mysql config
+```
+create database moodle;
+grant all on moodle.* to moodle@'localhost' identified by 'password';
+flush privileges;
+quit;
+```
 
