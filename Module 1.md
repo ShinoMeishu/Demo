@@ -1,5 +1,5 @@
 # Module 1
-## Task 1.
+### Task 1.
 
 ### Part A. Setting hostnames (All machines)
 
