@@ -101,48 +101,51 @@ BR-R: nslookup 30.0.0.2 <br />
 BR-SRV: nslookup 20.0.0.1 <br />
 
 ## Task 5. BR-SRV
-```
-sudo apt install apache2 php mariadb-server graphviz aspell php-pspell php-curl php-gd php-intl php-mysqlnd php-xmlrpc php-ldap -y
-```
-```
-nano /etc/php/7.4/cli/php.ini
-```
-change this lines to
 
->memory_limit = 256M <br />
->max_execution_time = 300<br />
->post_max_size = 100M<br />
->upload_max_filesize = 100M<br />
->max_input_vars = 3000<br />
->date.timezone = "Europe/Moscow"<br />
+```
+sudo apt-get update
+sudo apt-get install -y apache2 php7.4 libapache2-mod-php7.4 php7.4-mysql graphviz aspell git php7.4-pspell php7.4-curl php7.4-gd php7.4-intl php7.4-mysql ghostscript php7.4-xml php7.4-xmlrpc php7.4-ldap php7.4-zip php7.4-soap php7.4-mbstring mariadb-server mariadb-client
+```
+```
+cd /var/www
+sudo git clone https://github.com/moodle/moodle.git
+cd moodle
+sudo git checkout -t origin/MOODLE_401_STABLE
+```
+```
+sudo mkdir -p /var/www/moodledata
+sudo chown -R www-data /var/www/moodledata
+sudo chmod -R 777 /var/www/moodledata
+sudo chmod -R 755 /var/www/moodle
+```
+```
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/moodle.conf
+sudo sed -i 's|/var/www/html|/var/www/moodle|g' /etc/apache2/sites-available/moodle.conf
+sudo a2dissite 000-default.conf
+sudo a2ensite moodle.conf
+sudo systemctl reload apache2
+```
+```
+sudo sed -i 's/.*max_input_vars =.*/max_input_vars = 5000/' /etc/php/7.4/apache2/php.ini
+sudo sed -i 's/.*post_max_size =.*/post_max_size = 80M/' /etc/php/7.4/apache2/php.ini
+sudo sed -i 's/.*upload_max_filesize =.*/upload_max_filesize = 80M/' /etc/php/7.4/apache2/php.ini
+sudo service apache2 restart
+```
+```
+echo "* * * * * /var/www/moodle/admin/cli/cron.php >/dev/null" > /tmp/moodle_cron
+sudo crontab -u www-data /tmp/moodle_cron
+sudo rm /tmp/moodle_cron
+sudo chmod -R 777 /var/www/moodle
+sudo mysqladmin -u root password "P@ssw0rd"
+mysql
+```
+```
+CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'moodleuser'@'localhost' IDENTIFIED BY 'P@ssw0rd';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES, DROP, INDEX, ALTER ON moodle.* TO 'moodleuser'@'localhost';
+FLUSH PRIVILEGES;
+```
 
-restart apache
-```
-sudo systemctl restart apache2.service 
-```
 
-installation muddle
-```
-cd /var/www/html
-sudo wget https://download.moodle.org/download.php/direct/stable403/moodle-latest-403.zip
-sudo unzip moodle-latest-403.zip
-sudo cd moodle
-sudo cp -r * /var/www/html/
-sudo chown -R www-data: /var/www/html 
-sudo mkdir /var/www/moodledata 
-sudo chown -R www-data: /var/www/moodledata
-```
-creating database
-```
-sudo systemctl restart mariadb.service
-sudo mysql_secure_installation
-sudo mysql -u root -p
-```
-mysql config
-```
-create database moodle;
-grant all on moodle.* to moodle@'localhost' identified by 'password';
-flush privileges;
-quit;
-```
+
 
