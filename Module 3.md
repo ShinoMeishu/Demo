@@ -55,3 +55,6 @@ if (($msg contains ‘warning’ and) and ($msg contains ‘disk usage is greate
 action(type=”omfile” file=”/var/log/warning_disk.log”)
 }
 ```
+```
+tail -f /var/log/messages
+```
