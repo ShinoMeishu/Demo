@@ -8,8 +8,8 @@ hostnamectl set-hostname <hostname>
 ```
 ### Part C-D. Netmasks
 
-x = Количество хостов, x = 2^y\n
-255.255.255.256-x = netmask
+x = Количество хостов, x = 2^y\n__
+255.255.255.256-x = netmask__
 /32-y
 
 ### Part B. Setting IPs (All machines)
