@@ -1,16 +1,32 @@
-### Module 1
+# Module 1
 ## Task 1.
 
-# Part A. Setting hostnames (All machines)
+### Part A. Setting hostnames (All machines)
 
-> hostnamectl set-hostname <hostname>
+```
+hostnamectl set-hostname <hostname>
+```
+### Part C-D. Netmasks
 
-# Part C-D. Netmasks
+> x = Количество хостов, x = 2^y
+> 255.255.255.256-x = netmask
+> /32-y
 
-x = Количество хостов, x = 2^y
-255.255.255.256-x = netmask
-/32-y
+### Part B. Setting IPs (All machines)
 
+>1.0.0.0 - ISP-HQ
+>2.0.0.0 - ISP-BR
+>10.0.0.0 - ISP-CLI
+>20.0.0.0 - HQ
+>30.0.0.0 - BRANCH
+
+```
+nano /etc/network/interfaces
+```
+auto <interface>
+iface <interface> inet static/dhcp
+address 0.0.0.0/32
+gateway 0.0.0.0 
 # Part B. Setting IPs (All machines)
 
 1.0.0.0 - ISP-HQ
