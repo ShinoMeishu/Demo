@@ -100,6 +100,35 @@ HQ-SRV: nslookup br-r <br />
 BR-R: nslookup 30.0.0.2 <br />
 BR-SRV: nslookup 20.0.0.1 <br />
 
+## Task 2. HQ-R
+```
+apt install chrony -y
+nano /etc/chrony/chrony.conf
+```
+HQ-R:
+> # Add 
+> server 127.0.0.1 iburst prefer
+> hwtimestamp *
+> local stratum 5
+> allow 0/0
+>
+> # Comment
+> # Use debian vendor zone.
+> #pool 2.debian.pool.ntp.org iburst
+
+Other machines:
+```
+apt install chrony -y
+nano /etc/chrony/chrony.conf
+```
+> # Add
+> server 20.0.0.1 iburst prefer
+> # Comment
+> # Use debian vendor zone.
+> #pool 2.debian.pool.ntp.org iburst
+```
+chronyc sources
+```
 ## Task 5. BR-SRV
 
 ```
