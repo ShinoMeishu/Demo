@@ -105,7 +105,7 @@ BR-SRV: nslookup 20.0.0.1 <br />
 sudo apt install apache2 php mariadb-server graphviz aspell php-pspell php-curl php-gd php-intl php-mysqlnd php-xmlrpc php-ldap -y
 ```
 ```
-nano /etc/php/8.1/cli/php.ini
+nano /etc/php/7.4/cli/php.ini
 ```
 change this lines to
 
