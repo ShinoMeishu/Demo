@@ -48,6 +48,13 @@ gateway 2001:3::1
 ```
 ### Task 2. (Routers)
 ```
+nano /etc/sysctl.conf
+```
+> net.ipv4.ip_forward = 1
+```
+sysctl -p
+```
+```
 apt install frr -y
 nano /etc/frr/daemons
 ```
