@@ -56,18 +56,18 @@ nano /etc/frr/daemons
 nano /etc/frr/frr.conf
 ```
 ```
-> log syslog informational <br />
->router ospf <br />
-> ospf router-id 10.10.10.1 <br />
-> redistribute connected <br />
-> network 10.10.10.0/28 area 0.0.0.0 <br />
-> network 1.1.1.0/30 area 0.0.0.0 <br />
-> network 2.2.2.0/30 area 0.0.0.0 <br />
+log syslog informational <br />
+router ospf <br />
+ospf router-id 10.10.10.1 <br />
+redistribute connected <br />
+network 10.10.10.0/28 area 0.0.0.0 <br />
+network 1.1.1.0/30 area 0.0.0.0 <br />
+network 2.2.2.0/30 area 0.0.0.0 <br />
 ```
 ```
-> systemctl restart frr
-> vtysh -c "show run"
-> vtysh -c "show ip ospf neighbor"
+systemctl restart frr
+vtysh -c "show run"
+vtysh -c "show ip ospf neighbor"
 ```
 ISP:
 ```
@@ -94,14 +94,14 @@ max-lease-time 7200;
 option domain-name "hq.work";
 option domain-name-servers 20.20.20.2, 8.8.8.8;
 
-subnet 20.20.20.0 netmask 255.255.255.192 {
- range 20.20.20.2 20.20.20.18;
+subnet 20.0.0.0 netmask 255.255.255.192 {
+ range 20.0.0.2 20.0.0.18;
  option routers 20.20.20.1;
 }
 
 host hqserver {
 hardware ethernet <MAC-адресс HQ-SRV>;
-fixed-address 20.20.20.2;
+fixed-address 20.0.0.2;
 }
 ```
 ```
@@ -145,7 +145,6 @@ nano backup_router.sh
 
 cp -r /etc/frr /home/backup/frr_backup
 cp -r /etc/network /home/backup/network_backup
-cp -r /etc/iptables /home/backup/iptables_backup
 # Для HQ-R
 cp -r /etc/dhcp /home/backup/dhcp_backup
 
@@ -167,7 +166,7 @@ nano /etc/ssh/sshd_config
 ```
 > Port 2222
 ```
-iptables -t nat -A PREROUTING -p tcp --dport 22 -j NAT --to-destination 20.20.20.2:2222
+iptables -t nat -A PREROUTING -p tcp --dport 22 -j DNAT --to-destination 20.20.20.2:2222
 iptables -I INPUT -s 10.0.0.2 -p tcp --dport 2222 -j REJECT
 apt install iptables-persistent -y
 ```
