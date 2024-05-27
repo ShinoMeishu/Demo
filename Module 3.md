@@ -58,3 +58,16 @@ action(type=”omfile” file=”/var/log/warning_disk.log”)
 ```
 tail -f /var/log/messages
 ```
+## Task 9
+```
+apt install mdadm –y
+lsblk
+```
+```
+mdadm --create /dev/md0 --level=5 --raid-devices=3 /dev/sda /dev/sdc /dev/sdd
+```
+```
+mkfs –t ext4 /dev/md0
+mount /dev/md0 /mnt
+lsblk
+```
