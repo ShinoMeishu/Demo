@@ -163,6 +163,9 @@ systemctl restart smbd.service
 ## Task 5. BR-SRV
 
 ```
+sudo apt install lsb-release apt-transport-https ca-certificates software-properties-common -y
+sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 sudo apt-get update
 sudo apt-get install -y apache2 php7.4 libapache2-mod-php7.4 php7.4-mysql graphviz aspell git php7.4-pspell php7.4-curl php7.4-gd php7.4-intl php7.4-mysql ghostscript php7.4-xml php7.4-xmlrpc php7.4-ldap php7.4-zip php7.4-soap php7.4-mbstring mariadb-server mariadb-client
 ```
