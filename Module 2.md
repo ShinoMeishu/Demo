@@ -176,6 +176,54 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES, DROP, IND
 FLUSH PRIVILEGES;
 ```
 
+## Task 6
+```
+sudo apt install docker docker-compose -y
+mkdir /var/lib/mysql
+docker volume create --name=dbvolume
+nano /root/wiki.yml
+```
+```                                          
+version: '3'
+services:
+  MediaWiki:
+    container_name: wiki
+    image: mediawiki
+    restart: always
+    ports:
+      - 8080:80
+    links:
+      - database
+    volumes:
+      - images:/var/www/html/images
+      #- ./LocalSettings.php:/var/www/html/LocalSettings.php
+  database:
+    container_name: db
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: mediawiki
+      MYSQL_USER: wiki
+      MYSQL_PASSWORD: DEP@ssw0rd
+      MYSQL_ROOT_PASSWORD: DEP@ssw0rd
+    volumes:
+      - dbvolume:/var/lib/mysql
+
+volumes:
+  images:
+  dbvolume:
+    external: true
+  db:
+```
+```
+docker-compose -f wiki.yml up -d
+```
+Настроить, скачать файл и закинуть в директорий
+```
+docker-compose -f wiki.yml down
+```
 
 
 
