@@ -47,13 +47,14 @@ zone "0.0.30.in-addr.arpa" IN {
 };
 ```
 ```
+cd /etc/bind/
 cp db.empty hq.lan
 cp db.empty branch.lan
 cp db.empty 20.db
 cp db.empty 30.db
 ```
 
-Добавить строки в файлы
+Добавить строки в конец файлов
 ```
 nano /etc/bind/hq.lan
 ```
@@ -85,7 +86,7 @@ nano /etc/bind/30.db
 ```
 systemctl restart bind9
 ```
-All machines:
+На всех машинах:
 ```
 nano /etc/resolv.conf
 ```
@@ -95,8 +96,8 @@ search hq.work (or branch.work)
 nameserver 20.0.0.2
 nameserver 8.8.8.8
 ```
-HQ-R: nslookup hq-srv <br />
-HQ-SRV: nslookup br-r <br />
+HQ-R: nslookup hq-srv.hq.work <br />
+HQ-SRV: nslookup br-r.branch.work <br />
 BR-R: nslookup 30.0.0.2 <br />
 BR-SRV: nslookup 20.0.0.1 <br />
 
@@ -105,30 +106,33 @@ BR-SRV: nslookup 20.0.0.1 <br />
 apt install chrony -y
 nano /etc/chrony/chrony.conf
 ```
-HQ-R add:
+HQ-R добавить:
 > server 127.0.0.1 iburst prefer <br />
 > hwtimestamp * <br />
 > local stratum 5 <br />
 > allow 0/0 
 
-HQ-R comment:
+HQ-R закомментировать:
 > Use debian vendor zone. <br />
 > pool 2.debian.pool.ntp.org iburst
 
-Other machines:
+На остальных машинах установить chrony:
 ```
 apt install chrony -y
 nano /etc/chrony/chrony.conf
 ```
-Other machines add:
+Добавить адрес локального сервера:
 > server 20.0.0.1 iburst prefer
-
-Comment:
-
+Закомментировать пул:
 > Use debian vendor zone. <br />
 > pool 2.debian.pool.ntp.org iburst
+Проверка на машинах с помощью
 ```
 chronyc sources
+```
+Проверка на сервере chrony:
+```
+chronyc clients
 ```
 
 ## Task 4.
