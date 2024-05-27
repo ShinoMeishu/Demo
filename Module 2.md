@@ -130,6 +130,32 @@ Comment:
 ```
 chronyc sources
 ```
+
+## Task 4.
+apt install smbclient –y
+smbclient //IP_address_server/share1 -U username
+ 
+apt install samba
+smbpasswd -a username
+mkdir /media/share1
+mcedit /etc/samba/smb.conf
+	[share1]
+		path = /media/share1
+		read only = no
+		guest ok = no
+		valid users = username
+		browseable = yes
+		admin users = username
+systemctl restart smbd.service
+
+
+ <volume uid=Admin"
+ dstype="cifs"
+ server="hq-srv.hq.work"
+ path="Admin_Files"
+ mountpoint="/mint/All_Files"
+ options="sec=krb5i, cruid=%(USERID), nounix, uid=%(USERID), gid=%(USRRGID), file_mode=0664, dir_mode=0775"/>
+ 
 ## Task 5. BR-SRV
 
 ```
