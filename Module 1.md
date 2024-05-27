@@ -71,6 +71,7 @@ nano /etc/frr/frr.conf
 ```
 ISP:
 ```
+echo "default-information originate always" >> /etc/frr/frr.conf
 iptables -t nat -A POSTROUTING -o enp0s3 -j MASQURADE
 apt install iptables-persistent -y
 ```
